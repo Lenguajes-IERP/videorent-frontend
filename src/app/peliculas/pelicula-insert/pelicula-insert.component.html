@@ -1,0 +1,26 @@
+    <label for="generoSelect">Seleccionar género:</label>
+    <select id="generoSelect">
+      <option *ngFor="let genero of generos" [value]="genero.id">
+        {{ genero.nombre }}
+      </option>
+    </select>
+
+    <div>
+      <label for="actorSelect">Seleccionar Actor:</label>
+      <select id="actorSelect" [(ngModel)]="nuevoActor">
+        <option *ngFor="let actor of actores" [value]="actor.id">
+          {{ actor.nombre }} {{ actor.apellidos }}
+        </option>
+      </select>
+      <button (click)="agregarActor()">Agregar</button>
+    </div>
+
+    <div *ngIf="actoresPelicula.length > 0">
+      <p>Actores en esta película:</p>
+      <ul>
+        <li *ngFor="let actor of actoresPelicula">
+          {{ actor.nombre }} {{ actor.apellidos }} 
+          <button (click)="removerActor(actor)">Remover</button>
+        </li>
+      </ul>
+    </div>

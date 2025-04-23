@@ -28,8 +28,11 @@ export class PeliculaInsertReactive2Component implements OnInit{
   }
   ngOnInit(): void {
     this.peliculaForm = this.fb.group({
+      titulo: ['', Validators.required],
+      subtitulada: [false],
+      estreno: [false],
       genero: [null, Validators.required], // Usa un null para inicializar
-      actores: [[]] // arreglo vacío de actores de la película
+      actores: [[],Validators.required] // arreglo vacío de actores de la película
     });
 
     this.loadGeneros();
@@ -51,9 +54,38 @@ export class PeliculaInsertReactive2Component implements OnInit{
     });
   }
 
-  onSubmit(){
-    // TODO falta el código
+  onSubmit() {
+    if (this.peliculaForm.valid) {
+      console.log('Form Submitted! Data:', this.toJson());
+      this.peliculaService.guardarPelicula(this.toJson()).subscribe({
+        next: (response) => console.log('Pelicula saved:', response),
+        error: (error) => console.error('Error saving pelicula:', error)
+      });
+    } else {
+      console.log('Form is invalid');
+    }
   }
+   
+  toJson(): Object {
+    console.log(this.peliculaForm.value.genero.id);
+    const formValue = this.peliculaForm.value;
+    let actores: { actorId: number }[] = [];
+    actores = formValue.actores.map((actor: { id: number }) => 
+          ({
+               actorId: actor.id
+           }));
+    // retorno del objeto construido directamente   
+    return {
+        titulo: formValue.titulo, 
+        subtitulada: formValue.subtitulada,
+        estreno: formValue.estreno,
+        genero: {
+            generoId: formValue.genero
+        },
+        actores
+    };
+    
+ }
 
   onActorSelectionChange(event: Event): void {
     // Target the select element and get its value
@@ -75,7 +107,8 @@ export class PeliculaInsertReactive2Component implements OnInit{
      // console.log(this.actoresPelicula);
     }
   }
-  removeActor(actorIdToRemove: number) {
+  removeActor(actorIdToRemove?: number) {
+    
     const currentActors = this.peliculaForm.get('actores')?.value as Actor[];
     const updatedActors = currentActors.filter(actor => actor.id !== actorIdToRemove);
     this.actoresPelicula = this.actoresPelicula.filter(actor => actor.id !== actorIdToRemove)

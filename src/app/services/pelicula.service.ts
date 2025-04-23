@@ -3,14 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment'; // Import environment
 
-// Define an interface for the Pelicula object (optional but recommended)
-// interface Pelicula {
-//   titulo: string;
-//   subtitulada: boolean;
-//   estreno: boolean;
-//   genero: { generoId: number | null };
-//   actores: { actorId: number }[];
-// }
 
 @Injectable({
   providedIn: 'root'

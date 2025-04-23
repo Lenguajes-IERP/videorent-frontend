@@ -1,5 +1,27 @@
 
 <form [formGroup]="peliculaForm" (ngSubmit)="onSubmit()">
+
+   <!-- Título -->
+   <div>
+    <label for="titulo">Título:</label>
+    <input type="text" id="titulo" formControlName="titulo">
+    <div *ngIf="peliculaForm.get('titulo')?.invalid && (peliculaForm.get('titulo')?.dirty || peliculaForm.get('titulo')?.touched)" class="alert alert-danger">
+      Título es requerido.
+    </div>
+  </div>
+
+  <!-- Subtitulada -->
+  <div>
+    <label for="subtitulada">Subtitulada:</label>
+    <input type="checkbox" id="subtitulada" formControlName="subtitulada">
+  </div>
+
+  <!-- Estreno -->
+  <div>
+    <label for="estreno">Estreno:</label>
+    <input type="checkbox" id="estreno" formControlName="estreno">
+  </div>
+  
   <!-- Género -->
   <div>
     <label for="genero">Género:</label>
@@ -22,7 +44,7 @@
          <option [ngValue]="null" disabled selected>Seleccione un actor para agregar</option>
         <option *ngFor="let actor of actoresDisponibles" [value]="actor.id">{{ actor.nombre }}  {{ actor.apellidos }}</option>
       </select>
-      <button type="button" (click)="addActor()" [disabled]="!actorSelect.value">Agregar Actor</button>
+      <button type="button" (click)="addActor()" [disabled]="actorSelect.value==='Seleccione un actor para agregar'">Agregar Actor</button>
     </div>
     
     <h4>Actores Seleccionados:</h4>

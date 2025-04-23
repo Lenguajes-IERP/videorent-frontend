@@ -1,0 +1,40 @@
+
+<form [formGroup]="peliculaForm" (ngSubmit)="onSubmit()">
+  <!-- Género -->
+  <div>
+    <label for="genero">Género:</label>
+    <select id="genero" formControlName="genero">
+      <option [ngValue]="null" disabled>Seleccione un género</option>
+      <option *ngFor="let genero of generos" [ngValue]="genero.id">{{ genero.nombre }}</option>
+    </select>
+     <div *ngIf="peliculaForm.get('genero')?.invalid && (peliculaForm.get('genero')?.dirty || 
+     peliculaForm.get('genero')?.touched)" class="alert alert-danger">
+      Género es requerido.
+    </div>
+  </div>
+
+  <!-- Actores Disponibles -->
+  <div>
+    <h3>Actores</h3>
+    <div>
+      <label for="actorSelect">Seleccionar Actor:</label>
+      <select id="actorSelect"  #actorSelect (change)="onActorSelectionChange($event)">
+         <option [ngValue]="null" disabled selected>Seleccione un actor para agregar</option>
+        <option *ngFor="let actor of actoresDisponibles" [value]="actor.id">{{ actor.nombre }}  {{ actor.apellidos }}</option>
+      </select>
+      <button type="button" (click)="addActor()" [disabled]="!actorSelect.value">Agregar Actor</button>
+    </div>
+    
+    <h4>Actores Seleccionados:</h4>
+    <ul>
+      <li *ngFor="let actor of actoresPelicula">
+        {{ actor.nombre }}    {{ actor.apellidos }}
+        <button type="button" (click)="removeActor(actor.id)">Quitar</button>
+      </li>
+      <li *ngIf="actoresPelicula.length === 0">No hay actores seleccionados.</li>
+    </ul>
+    </div>
+  <!-- Submit Button -->
+  <button type="submit" [disabled]="peliculaForm.invalid">Guardar Película</button>
+
+</form>
